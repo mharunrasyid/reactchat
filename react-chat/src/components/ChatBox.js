@@ -1,25 +1,14 @@
 import React, { Component } from "react";
 import ChatUserBox from './ChatUserBox'
+import ChatItemBox from './ChatItemBox'
 import ChatForm from './ChatForm';
 import { Navigate } from 'react-router-dom';
 import '../style.css';
-import axios from 'axios'
-
-const request = axios.create({
-    baseURL: 'http://localhost:3001/api/',
-    timeout: 1000,
-    headers: { 'X-Custom-Header': 'foobar' }
-});
-
 
 export default class ChatBox extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            chat: [
-                { username: "rasyid" },
-                { username: "fatih" },
-            ],
             redirect: false
         }
 
@@ -30,15 +19,13 @@ export default class ChatBox extends Component {
         if (!localStorage.getItem("token")) {
             return this.setState({ redirect: true })
         }
+
+        this.props.onLoad()
     }
 
     logout() {
-        request.get("users/destroy", { headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` } }).then((res) => {
-            this.setState({ redirect: true })
-            localStorage.removeItem("token");
-        }).catch((err) => {
-            console.log(err);
-        })
+        this.props.onLogout()
+        this.setState({ redirect: true })
     }
 
 
@@ -52,16 +39,18 @@ export default class ChatBox extends Component {
                 <main className="main-chatbox">
                     <div className="sidebar-chatbox">
                         <div className="title-sidebar-chatbox">Contacts</div>
-                        <ChatUserBox usernames={this.state.chat} />
+                        <ChatUserBox usernames={this.props.users} />
                         <button className="btn-logout" onClick={this.logout}>LOG OUT</button>
                     </div>
                     <div className="content-chatbox">
                         <div className="content-header-chatbox">
                             rasyid
-                            <i className="fas fa-ellipsis-v kebab-icon"></i>
+                            <i className="fas fa-tasks kebab-icon"></i>
                         </div>
                         <div className="content-main-chatbox">
-                            <div></div>
+                            <div className="chatcontainer-chatbox">
+                                <ChatItemBox contents={this.props.users} />
+                            </div>
                             <ChatForm />
                         </div>
                     </div>

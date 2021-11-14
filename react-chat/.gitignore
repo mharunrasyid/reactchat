@@ -21,7 +21,6 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-flux
 
 # ps aux | grep node
 # kill -9 36115

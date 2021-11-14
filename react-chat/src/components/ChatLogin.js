@@ -45,7 +45,7 @@ export default class ChatLogin extends Component {
         return (
             <div className="container-chatlogin">
                 <div className="chatlogin-box">
-                    <header className="header-chatlogin">Login</header>
+                    <header className="header-chatlogin">LOGIN</header>
                     <form onSubmit={this.handleSubmit} className="form-chatlogin">
                         <input type="text" className="input-chatlogin" placeholder="Username" value={this.state.value} onChange={this.handleChange} required />
                         <input type="submit" value="LOG IN" className="btn-chatlogin" />

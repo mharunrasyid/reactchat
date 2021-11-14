@@ -99,7 +99,8 @@
   overflow: auto;
 }
 
-.link-chat-user-item-box::-webkit-scrollbar {
+.link-chat-user-item-box::-webkit-scrollbar,
+.chatcontainer-chatbox::-webkit-scrollbar {
   width: 7px;
 }
 
@@ -110,6 +111,11 @@
 
 .link-chat-user-item-box::-webkit-scrollbar-thumb {
   background: rgb(172, 172, 172);
+  border-radius: 7px;
+}
+
+.chatcontainer-chatbox::-webkit-scrollbar-thumb {
+  background: rgb(189, 188, 188);
   border-radius: 7px;
 }
 
@@ -173,13 +179,12 @@
   border-radius: 8px;
   box-sizing: border-box;
   display: flex;
-  padding: 15px;
+  padding: 15px 20px;
   justify-content: space-between;
   flex-direction: column;
 }
 
 .chatform-chatbox {
-  /* background: red; */
   display: flex;
   align-items: center;
   box-sizing: border-box;
@@ -217,16 +222,47 @@
 
 .kebab-icon {
   position: absolute;
-  right: 10px;
+  right: 15px;
   top: 18px;
   font-size: 22px;
   color: rgba(0, 0, 0, 0.6);
   cursor: pointer;
   border-radius: 50%;
-  padding: 13px 20px;
+  padding: 13px;
   transition: 0.3s ease all;
 }
 
 .kebab-icon:hover {
   background: rgba(0, 0, 0, 0.05);
+}
+
+.chatcontainer-chatbox {
+  height: 100%;
+  margin-bottom: 20px;
+  overflow: auto;
+}
+
+.chat-item-box {
+  padding: 1px;
+  margin-right: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-item {
+  padding: 12px 16px;
+  border-radius: 24px;
+  align-self: flex-end;
+  flex-basis: auto;
+  color: white;
+  margin-bottom: 15px;
+  max-width: 250px;
+  background: #2d95f6;
+}
+
+.chat-item-others {
+  align-self: flex-start;
+  color: rgba(0, 0, 0, 0.6);
+  background: white;
+  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.1) 0px 0px 0px 1px;
 }

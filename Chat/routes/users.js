@@ -6,9 +6,10 @@ var jwt = require("jsonwebtoken");
 const helpers = require("../helpers/util");
 
 /* GET users listing. */
-router.get('/', async function (req, res, next) {
+router.get('/', helpers.isLoggedIn, async function (req, res, next) {
   try {
     const users = await User.find({});
+    console.log(users);
     res.json(users)
   } catch (err) {
     res.status(500).json(err)
@@ -35,6 +36,7 @@ router.post("/login", async function (req, res, next) {
       let dataAll = {
         data: {
           username: req.body.username,
+          chat: {}
         },
         token,
       };

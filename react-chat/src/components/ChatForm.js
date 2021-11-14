@@ -17,6 +17,7 @@ export default class ChatForm extends Component {
     handleSubmit(event) {
         alert('A name was submitted: ' + this.state.content);
         this.setState({ content: "" });
+        event.target.querySelector('textarea').style.height = "30px";
         event.preventDefault();
     }
 
