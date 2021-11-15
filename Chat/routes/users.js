@@ -9,7 +9,6 @@ const helpers = require("../helpers/util");
 router.get('/', helpers.isLoggedIn, async function (req, res, next) {
   try {
     const users = await User.find({});
-    console.log(users);
     res.json(users)
   } catch (err) {
     res.status(500).json(err)
@@ -20,7 +19,6 @@ router.post("/login", async function (req, res, next) {
   try {
     const user = await User.findOne({ username: req.body.username });
 
-    console.log(req.body);
     if (!user) {
       var token = jwt.sign(
         {
@@ -49,7 +47,7 @@ router.post("/login", async function (req, res, next) {
         },
         "shhhhh"
       );
-      
+
       let dataAll = {
         data: {
           username: user.username,
@@ -69,7 +67,7 @@ router.post("/login", async function (req, res, next) {
           new: true,
         }
       );
-  
+
       res.json(dataAll);
     }
   } catch (err) {
@@ -101,7 +99,6 @@ router.get("/token", helpers.isLoggedIn, async function (req, res) {
     const user = await User.findOne({ username: req.body.userToken.username });
 
     dataUser = {
-      _id: user._id,
       username: user.username
     }
 

@@ -1,7 +1,6 @@
 import Immutable from 'immutable';
 import { ReduceStore } from 'flux/utils';
-// import User from './User';
-import dispatcher from './Dispatcher';
+import dispatcher from '../Dispatcher';
 
 class UserStore extends ReduceStore {
     constructor() {

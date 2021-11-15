@@ -1,4 +1,4 @@
-import dispatcher from "./Dispatcher";
+import dispatcher from "../Dispatcher";
 import axios from "axios";
 
 const request = axios.create({
@@ -17,7 +17,11 @@ const Actions = {
 
     loadUser() {
         request.get('users', { headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` } }).then((users) => {
-            Actions.drawUser(users.data)
+            request.get('users/token', { headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` } }).then((user) => {
+                Actions.drawUser(users.data.filter(item => item.username !== user.data.username))
+            }).catch((err) => {
+                throw err
+            })
         }).catch((err) => {
             throw err
         })
@@ -26,6 +30,7 @@ const Actions = {
     logoutUser() {
         request.get("users/destroy", { headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` } }).then((res) => {
             localStorage.removeItem("token");
+            localStorage.removeItem("username");
         }).catch((err) => {
             throw err;
         })

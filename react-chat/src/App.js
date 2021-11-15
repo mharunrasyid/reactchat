@@ -10,6 +10,9 @@ import UserStore from "./flux/user/UserStore";
 import UserActions from "./flux/user/UserActions"
 import { Component } from "react";
 
+import ChatStore from "./flux/chat/ChatStore";
+import ChatActions from "./flux/chat/ChatActions"
+
 import ChatBox from './components/ChatBox';
 import ChatLogin from './components/ChatLogin'
 import './style.css';
@@ -26,30 +29,25 @@ const convert = function (containerClass) {
   return containerClass;
 }
 
-// function App() {
-//   return (
-//     <Router>
-//       <Routes>
-//         <Route path="/" element={<ChatBox />} strict />
-//         <Route path="/login" element={<ChatLogin />} strict />
-//       </Routes>
-//     </Router>
-//   )
-// }
-
 class App extends Component {
   static getStores() {
     return [
-      UserStore
+      UserStore,
+      ChatStore
     ]
   }
 
   static calculateState(prevState) {
     return {
       users : UserStore.getState(),
+      chats: ChatStore.getState(),
 
       onLoad: UserActions.loadUser,
       onLogout: UserActions.logoutUser,
+
+      onLoadChat: ChatActions.loadChat,
+      onAddChat: ChatActions.addChat,
+      onResendChat: ChatActions.resendChat,
     }
   }
 

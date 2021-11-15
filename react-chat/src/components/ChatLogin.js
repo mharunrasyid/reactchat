@@ -20,7 +20,7 @@ export default class ChatLogin extends Component {
     }
 
     handleChange(event) {
-        this.setState({ value: event.target.value });
+        this.setState({ value: event.target.value.trim() });
     }
 
     handleSubmit(event) {
@@ -28,6 +28,7 @@ export default class ChatLogin extends Component {
         request.post("users/login", { username }).then((res) => {
             this.setState({ redirect: true })
             localStorage.setItem("token", res.data.token);
+            localStorage.setItem("username", res.data.data.username);
         }).catch((err) => {
             console.log(err);
         })
