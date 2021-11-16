@@ -29,12 +29,12 @@ router.get('/', helpers.isLoggedIn, async function (req, res, next) {
 });
 
 router.post('/', helpers.isLoggedIn, async function (req, res, next) {
-    const { sender, receiver, content } = req.body;
+    const { id, sender, receiver, content } = req.body;
     try {
         const user = await User.findOne({ username: sender })
 
         user.chat[receiver] = [...(user.chat[receiver] ? user.chat[receiver] : []), {
-            id: Date.now(),
+            id,
             content,
             chatdate: new Date()
         }];
@@ -50,5 +50,27 @@ router.post('/', helpers.isLoggedIn, async function (req, res, next) {
         res.status(500).json(err)
     }
 })
+
+router.get('/delete', helpers.isLoggedIn, async function (req, res, next) {
+    const { id, sender, receiver } = req.query;
+
+    try {
+        const senderChat = await User.findOne({ username: sender });
+        const receiverChat = await User.findOne({ username: receiver });
+
+        const chats = [...(senderChat?.chat[receiver] || []).filter(item => {
+            item.role = "sender";
+            return item.id != id
+        }), ...(receiverChat?.chat[sender] || []).filter(item => {
+            item.role = "receiver";
+            return item.id != id
+        })].sort((a, b) => a.chatdate - b.chatdate)
+
+        res.json(chats)
+    } catch (err) {
+        console.log(err);
+        res.status(500).json(err)
+    }
+});
 
 module.exports = router;

@@ -26,6 +26,7 @@ class ChatStore extends ReduceStore {
                 return state.set(action.id, new Chat({
                     id: action.id,
                     content: action.content,
+                    role: action.role,
                     sent: true
                 }));
 
@@ -39,8 +40,8 @@ class ChatStore extends ReduceStore {
             case "SUCCESS_RESEND_CHAT":
                 return state.setIn([action.id, "sent"], true);
 
-            case "FAILED_RESEND_CHAT":
             case "SUCCESS_ADD_CHAT":
+            case "FAILED_RESEND_CHAT":
             default:
                 return state;
         }

@@ -17,6 +17,9 @@ import ChatBox from './components/ChatBox';
 import ChatLogin from './components/ChatLogin'
 import './style.css';
 
+import { io } from "socket.io-client";
+const socket = io("http://localhost:3001/");
+
 const convert = function (containerClass) {
   const tmp = containerClass;
   containerClass = function (...args) {
@@ -30,6 +33,12 @@ const convert = function (containerClass) {
 }
 
 class App extends Component {
+  constructor(props) {
+    super(props)
+
+    this.state = ({ room: '' })
+  }
+  
   static getStores() {
     return [
       UserStore,
@@ -39,7 +48,7 @@ class App extends Component {
 
   static calculateState(prevState) {
     return {
-      users : UserStore.getState(),
+      users: UserStore.getState(),
       chats: ChatStore.getState(),
 
       onLoad: UserActions.loadUser,
@@ -47,15 +56,31 @@ class App extends Component {
 
       onLoadChat: ChatActions.loadChat,
       onAddChat: ChatActions.addChat,
+      onDrawAddChat: ChatActions.drawAddChat,
       onResendChat: ChatActions.resendChat,
     }
   }
 
-  render(){
+  componentDidMount() {
+    socket.on("connect", () => {
+      socket.on("invite", ({ receiver, room }) => {
+        if (localStorage.getItem("username") === receiver) {
+          socket.emit("join", room)
+          this.setState(({ room }))
+        }
+      })
+
+      socket.on("commingchat", data => {
+        this.state.onDrawAddChat(data.id, "receiver", data.content)
+      })
+    });
+  }
+
+  render() {
     return (
       <Router>
         <Routes>
-          <Route path="/" element={<ChatBox {...this.state} />} strict /> 
+          <Route path="/" element={<ChatBox {...this.state} socket={socket} room={this.state.room} />} strict />
           <Route path="/login" element={<ChatLogin />} strict />
         </Routes>
       </Router>

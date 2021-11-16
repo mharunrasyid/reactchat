@@ -5,6 +5,9 @@ export default function ChatItemBox(props) {
     return (
         <div className="chat-item-box">
             {nodeList}
+            {/* <div className="scroll-btn">
+                <i className="fas fa-chevron-down"></i>
+            </div> */}
         </div>
     )
 }

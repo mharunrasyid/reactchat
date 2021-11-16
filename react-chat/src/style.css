@@ -125,11 +125,21 @@
 
 .link-chat-user-item {
   background: rgb(248, 248, 248);
-  padding: 15px;
+  padding: 15px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   font-size: 19px;
   cursor: pointer;
-  padding-left: 22px;
   color: rgba(0, 0, 0, 0.6);
+}
+
+.chat-notif {
+  background: rgb(243, 65, 65);
+  color: white;
+  border-radius: 20px;
+  padding: 5px 8px;
+  font-size: 14px;
 }
 
 .link-chat-user-item:hover {
@@ -250,6 +260,7 @@
 }
 
 .chat-item-box {
+  position: relative;
   padding: 1px;
   box-sizing: border-box;
   margin-right: 15px;
@@ -336,6 +347,15 @@
   color: rgb(100, 99, 99);
 }
 
-.chat-item-actions-none {
-  display: none;
-}
+/* .scroll-btn {
+  position: fixed;
+  bottom: 110px;
+  right: 78px;
+  background: white;
+  color: rgb(180, 180, 180);
+  border: 2px solid rgb(180, 180, 180);
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 20px;
+  padding: 9px 10px 6px 12px;
+} */

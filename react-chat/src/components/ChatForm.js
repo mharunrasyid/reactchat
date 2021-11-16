@@ -15,7 +15,14 @@ export default class ChatForm extends Component {
     }
 
     handleSubmit(event) {
-        this.props.add(this.props.receiver, this.state.content);
+        const id = Date.now()
+
+        
+        if (this.state.content.trim()) {
+            this.props.add(id, this.props.receiver, this.state.content);
+            this.props.socket.emit("addChat", { id, content: this.state.content, room: this.props.room })
+        }
+
         this.setState({ content: "" });
         event.target.querySelector('textarea').style.height = "30px";
         event.preventDefault();

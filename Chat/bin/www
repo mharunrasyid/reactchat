@@ -7,6 +7,7 @@
 var app = require('../app');
 var debug = require('debug')('chat:server');
 var http = require('http');
+const { channel } = require('diagnostics_channel');
 
 /**
  * Get port from environment and store in Express.
@@ -20,6 +21,35 @@ app.set('port', port);
  */
 
 var server = http.createServer(app);
+
+// socket io
+
+const io = require('socket.io')(server, {
+  cors: {
+    origin: '*',
+  }
+});
+
+io.on('connection', (socket) => {
+  console.log('a user connected');
+  socket.on('invite-partner', (receiver, sender) => {
+    const room = `${sender}-${receiver}`
+    socket.join(room)
+    socket.broadcast.emit("invite", { receiver, sender, room })
+  });
+
+  socket.on('join', (room) => {
+    socket.join(room)
+  });
+
+  socket.on('addChat', (data) => {
+    socket.to(data.room).emit("commingchat", data)
+  });
+
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
+  });
+});
 
 /**
  * Listen on provided port, on all network interfaces.

@@ -1,22 +1,37 @@
-export default function ChatItem(props) {
-    let element;
-    if (props.sent) {
-        element = <div className={props.position === "sender" ? "chat-item-actions" : "chat-item-actions chat-item-actions-others"}>
-            <i className="fas fa-trash"></i>
-        </div>
-    } else {
-        element = <div className={props.position === "sender" ? "chat-item-actions" : "chat-item-actions chat-item-actions-others"}>
-            <i className="fas fa-redo-alt" onClick={() => props.resend(props.id, props.receiver, props.content)}></i>
-        </div>
+import React, { Component } from "react";
+
+export default class ChatItem extends Component {
+    constructor(props) {
+        super(props)
+        this.state = { btnCheck: false }
     }
 
-    return (
-        <form className="chat-item-container chat-item-container-others">
-            <input type="checkbox" className="checkbox-chat-item checkbox-chat-item-others" />
-            <div className={props.position === "sender" ? "sub-chat-item" : "sub-chat-item sub-chat-item-others"}>
-                {element}
-                <div className={props.position === "sender" ? "chat-item" : "chat-item chat-item-others"}>{props.content}</div>
+    render() {
+        let element;
+
+        if (this.props.sent) {
+            if (this.state.btnCheck) {
+                element = <div className={this.props.position === "sender" ? "chat-item-actions" : "chat-item-actions chat-item-actions-others"}>
+                    <i className="fas fa-trash"></i>
+                </div>
+            }
+        } else {
+            element = <div className={this.props.position === "sender" ? "chat-item-actions" : "chat-item-actions chat-item-actions-others"}>
+                <i className="fas fa-redo-alt" onClick={() => this.props.resend(this.props.id, this.props.receiver, this.props.content)}></i>
             </div>
-        </form>
-    )
+        }
+
+        return (
+            <form className="chat-item-container chat-item-container-others">
+                <input type="checkbox" className="checkbox-chat-item checkbox-chat-item-others" />
+                <div className={this.props.position === "sender" ? "sub-chat-item" : "sub-chat-item sub-chat-item-others"}>
+                    {element}
+                    <div className={this.props.position === "sender" ? "chat-item" : "chat-item chat-item-others"} 
+                    onClick={() => this.setState(prevState => ({
+                        btnCheck: !prevState.btnCheck
+                    }))}>{this.props.content}</div>
+                </div>
+            </form>
+        )
+    }
 }

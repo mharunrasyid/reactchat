@@ -1,7 +1,5 @@
 import dispatcher from "../Dispatcher";
 import axios from "axios";
-import { v4 as uuidv4 } from "uuid"
-
 
 const request = axios.create({
     baseURL: 'http://localhost:3001/api/',
@@ -31,10 +29,11 @@ const Actions = {
         })
     },
 
-    drawAddChat(id, content) {
+    drawAddChat(id, role, content) {
         dispatcher.dispatch({
             type: "DRAW_ADD_CHAT",
             id,
+            role,
             content
         })
     },
@@ -46,6 +45,14 @@ const Actions = {
         })
     },
 
+    // successAddChat(idFake, id) {
+    //     dispatcher.dispatch({
+    //         type: "SUCCESS_ADD_CHAT",
+    //         idFake,
+    //         id
+    //     })
+    // },
+
     failedAddChat(id, content) {
         dispatcher.dispatch({
             type: "FAILED_ADD_CHAT",
@@ -54,11 +61,9 @@ const Actions = {
         })
     },
 
-    addChat(receiver, content) {
-        const id = uuidv4()
-
-        Actions.drawAddChat(id, content)
-        request.post('chats', { sender: localStorage.getItem("username"), receiver, content }, {
+    addChat(id, receiver, content) {
+        Actions.drawAddChat(id, "sender", content)
+        request.post('chats', { id, sender: localStorage.getItem("username"), receiver, content }, {
             headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` },
         }).then((chat) => {
             Actions.successAddChat(chat)
@@ -83,7 +88,7 @@ const Actions = {
     },
 
     resendChat(id, receiver, content) {
-        request.post('chats', { sender: localStorage.getItem("username"), receiver, content }, {
+        request.post('chats', { id, sender: localStorage.getItem("username"), receiver, content }, {
             headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` },
         }).then((chat) => {
             Actions.successResendChat(id)
