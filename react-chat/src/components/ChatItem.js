@@ -11,7 +11,9 @@ export default class ChatItem extends Component {
 
         if (this.props.sent) {
             if (this.state.btnCheck) {
-                element = <div className={this.props.position === "sender" ? "chat-item-actions" : "chat-item-actions chat-item-actions-others"}>
+                element = 
+                <div className={this.props.position === "sender" ? "chat-item-actions" : "chat-item-actions chat-item-actions-others"} 
+                onClick={() => this.props.position === "sender" ? this.props.delete(this.props.id, localStorage.getItem("username"), this.props.receiver) : this.props.delete(this.props.id, this.props.receiver, localStorage.getItem("username"))}>
                     <i className="fas fa-trash"></i>
                 </div>
             }

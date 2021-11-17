@@ -15,6 +15,19 @@ router.get('/', helpers.isLoggedIn, async function (req, res, next) {
   }
 });
 
+router.get('/notif/:username', helpers.isLoggedIn, async function (req, res, next) {
+  try {
+    const users = await User.find({});
+    const userNotif = users.filter(item => item.username !== req.params.username).map(item => {
+      totalUnread = users.filter(item => item.username === req.params.username)[0].chat[item.username].filter(item => !item.read).length
+      return { username: item.username, unread: totalUnread };
+    })
+    res.json(userNotif)
+  } catch (err) {
+    res.status(500).json(err)
+  }
+});
+
 router.post("/login", async function (req, res, next) {
   try {
     const user = await User.findOne({ username: req.body.username });

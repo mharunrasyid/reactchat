@@ -43,7 +43,8 @@ io.on('connection', (socket) => {
   });
 
   socket.on('addChat', (data) => {
-    socket.to(data.room).emit("commingchat", data)
+    console.log("addChat", data);
+    socket.to(data.room).emit("comingchat", data)
   });
 
   socket.on('disconnect', () => {

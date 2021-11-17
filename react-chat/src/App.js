@@ -53,11 +53,14 @@ class App extends Component {
 
       onLoad: UserActions.loadUser,
       onLogout: UserActions.logoutUser,
+      onDrawNotif: UserActions.drawNotif,
 
       onLoadChat: ChatActions.loadChat,
       onAddChat: ChatActions.addChat,
       onDrawAddChat: ChatActions.drawAddChat,
       onResendChat: ChatActions.resendChat,
+      onDeleteChat: ChatActions.deleteChat,
+      onReadChat: ChatActions.readChat
     }
   }
 
@@ -70,8 +73,10 @@ class App extends Component {
         }
       })
 
-      socket.on("commingchat", data => {
+      socket.on("comingchat", data => {
         this.state.onDrawAddChat(data.id, "receiver", data.content)
+        console.log("commingChat");
+        this.state.onDrawNotif(data)
       })
     });
   }

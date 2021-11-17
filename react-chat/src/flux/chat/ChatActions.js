@@ -1,4 +1,5 @@
 import dispatcher from "../Dispatcher";
+import UserActions from "../user/UserActions"
 import axios from "axios";
 
 const request = axios.create({
@@ -45,14 +46,6 @@ const Actions = {
         })
     },
 
-    // successAddChat(idFake, id) {
-    //     dispatcher.dispatch({
-    //         type: "SUCCESS_ADD_CHAT",
-    //         idFake,
-    //         id
-    //     })
-    // },
-
     failedAddChat(id, content) {
         dispatcher.dispatch({
             type: "FAILED_ADD_CHAT",
@@ -94,6 +87,43 @@ const Actions = {
             Actions.successResendChat(id)
         }).catch((err) => {
             Actions.failedResendAddChat(id)
+            throw err
+        })
+    },
+
+    successDeleteChat(id) {
+        dispatcher.dispatch({
+            type: "SUCCESS_DELETE_CHAT",
+            id
+        })
+    },
+
+    failedDeleteAddChat(id) {
+        dispatcher.dispatch({
+            type: "FAILED_DELETE_CHAT",
+            id
+        })
+    },
+
+    deleteChat(id, sender, receiver) {
+        request.put('chats/delete', { id, sender, receiver }, {
+            headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` },
+        }).then(() => {
+            Actions.successDeleteChat(id)
+        }).catch((err) => {
+            Actions.failedDeleteAddChat(id)
+            throw err
+        })
+    },
+
+    readChat(sender, receiver) {
+        request.put('chats/read', { sender, receiver }, {
+            headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` },
+        }).then(() => {
+            console.log("readChat");
+            Actions.loadChat(receiver);
+            UserActions.loadUser()
+        }).catch((err) => {
             throw err
         })
     },

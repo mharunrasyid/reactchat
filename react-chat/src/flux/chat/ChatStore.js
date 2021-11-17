@@ -40,8 +40,12 @@ class ChatStore extends ReduceStore {
             case "SUCCESS_RESEND_CHAT":
                 return state.setIn([action.id, "sent"], true);
 
+            case "SUCCESS_DELETE_CHAT":
+                return state.delete(action.id)
+
             case "SUCCESS_ADD_CHAT":
             case "FAILED_RESEND_CHAT":
+            case "FAILED_DELETE_CHAT":
             default:
                 return state;
         }

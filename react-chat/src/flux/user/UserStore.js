@@ -1,4 +1,3 @@
-import Immutable from 'immutable';
 import { ReduceStore } from 'flux/utils';
 import dispatcher from '../Dispatcher';
 
@@ -8,17 +7,21 @@ class UserStore extends ReduceStore {
     }
 
     getInitialState() {
-        return Immutable.OrderedMap();
+        return [];
     }
 
     reduce(state, action) {
         switch (action.type) {
             case "DRAW_USER":
-                return Immutable.OrderedMap(
-                    action.users.map(user => {
-                        return [user._id, user]
-                    })
-                );
+                return action.users
+
+            case "DRAW_NOTIF":
+                return state.map(item => {
+                    if (item.username === action.data.sender) {
+                        item.unread++
+                    }
+                    return item
+                })
 
             default:
                 return state;

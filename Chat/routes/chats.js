@@ -36,6 +36,7 @@ router.post('/', helpers.isLoggedIn, async function (req, res, next) {
         user.chat[receiver] = [...(user.chat[receiver] ? user.chat[receiver] : []), {
             id,
             content,
+            read: false,
             chatdate: new Date()
         }];
 
@@ -51,26 +52,46 @@ router.post('/', helpers.isLoggedIn, async function (req, res, next) {
     }
 })
 
-router.get('/delete', helpers.isLoggedIn, async function (req, res, next) {
-    const { id, sender, receiver } = req.query;
-
+router.put('/read', helpers.isLoggedIn, async function (req, res, next) {
+    const { sender, receiver } = req.body;
     try {
-        const senderChat = await User.findOne({ username: sender });
         const receiverChat = await User.findOne({ username: receiver });
 
-        const chats = [...(senderChat?.chat[receiver] || []).filter(item => {
-            item.role = "sender";
-            return item.id != id
-        }), ...(receiverChat?.chat[sender] || []).filter(item => {
-            item.role = "receiver";
-            return item.id != id
-        })].sort((a, b) => a.chatdate - b.chatdate)
+        receiverChat.chat[sender] = [...(receiverChat.chat[sender] ? receiverChat.chat[sender] : [])].map(item => {
+            item.read = true;
+            return item;
+        });
 
-        res.json(chats)
+        receiverChat.markModified('chat');
+        receiverChat.save();
+
+        let data =  receiverChat.chat[sender];
+
+        res.json(data);
     } catch (err) {
         console.log(err);
         res.status(500).json(err)
     }
-});
+})
+
+router.put('/delete', helpers.isLoggedIn, async function (req, res, next) {
+    const { id, sender, receiver } = req.body;
+    try {
+        const senderChat = await User.findOne({ username: sender });
+
+        senderChat.chat[receiver] = [...(senderChat.chat[receiver] ? senderChat.chat[receiver] : [])].filter(item => {
+            return item.id != id
+        });
+
+        senderChat.markModified('chat');
+        senderChat.save();
+
+        let data = senderChat.chat[receiver]
+        res.json(data)
+    } catch (err) {
+        console.log(err);
+        res.status(500).json(err)
+    }
+})
 
 module.exports = router;

@@ -4,8 +4,6 @@ export default class ChatUserItem extends Component {
     constructor(props) {
         super(props)
 
-        this.state = ({ notif: true })
-
         this.startChat = this.startChat.bind(this);
     }
 
@@ -26,21 +24,14 @@ export default class ChatUserItem extends Component {
             event.target.style.color = "white"
         }
 
-        this.setState({ notif: false })
-
         this.props.socket.emit("invite-partner", this.props.username, localStorage.getItem("username"))
     }
 
     render() {
-        let element;
-        if (this.state.notif) {
-            element = <div className="chat-notif">5</div>
-        }
-
         return (
             <div className="link-chat-user-item" onClick={this.startChat}>
                 {this.props.username}
-                {element}
+                {this.props.unread > 0 && <div className="chat-notif">{this.props.unread}</div>}
             </div>
         )
     }

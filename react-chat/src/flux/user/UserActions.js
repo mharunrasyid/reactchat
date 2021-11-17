@@ -15,13 +15,16 @@ const Actions = {
         })
     },
 
+    drawNotif(data) {
+        dispatcher.dispatch({
+            type: "DRAW_NOTIF",
+            data
+        })
+    },
+
     loadUser() {
-        request.get('users', { headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` } }).then((users) => {
-            request.get('users/token', { headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` } }).then((user) => {
-                Actions.drawUser(users.data.filter(item => item.username !== user.data.username))
-            }).catch((err) => {
-                throw err
-            })
+        request.get(`users/notif/${localStorage.getItem("username")}`, { headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` } }).then((users) => {
+            Actions.drawUser(users.data)
         }).catch((err) => {
             throw err
         })
