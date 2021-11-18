@@ -38,7 +38,7 @@ class App extends Component {
 
     this.state = ({ room: '' })
   }
-  
+
   static getStores() {
     return [
       UserStore,
@@ -75,17 +75,24 @@ class App extends Component {
 
       socket.on("comingchat", data => {
         this.state.onDrawAddChat(data.id, "receiver", data.content)
-        console.log("commingChat");
         this.state.onDrawNotif(data)
       })
+
+      socket.on("deletechat", data => {
+        this.state.onDeleteChat(data.id, data.sender, data.receiver)
+      })
     });
+  }
+
+  setRoom = (room) => {
+    this.setState({ room })
   }
 
   render() {
     return (
       <Router>
         <Routes>
-          <Route path="/" element={<ChatBox {...this.state} socket={socket} room={this.state.room} />} strict />
+          <Route path="/" element={<ChatBox {...this.state} socket={socket} room={this.state.room} setroom={this.setRoom} />} strict />
           <Route path="/login" element={<ChatLogin />} strict />
         </Routes>
       </Router>

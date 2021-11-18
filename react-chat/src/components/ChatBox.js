@@ -18,8 +18,6 @@ export default class ChatBox extends Component {
         this.logout = this.logout.bind(this);
         this.startChat = this.startChat.bind(this);
         this.scrollToBottom = this.scrollToBottom.bind(this);
-        // this.scrollEl = this.scrollEl.bind(this);
-        this.scrollTop = this.scrollTop.bind(this);
     }
 
     componentDidMount() {
@@ -48,22 +46,6 @@ export default class ChatBox extends Component {
     scrollToBottom() {
         if (this.el) {
             this.el.scrollTop = this.el.scrollHeight
-            // if (this.el.offsetHeight + this.el.scrollTop >= this.el.scrollHeight) {
-            // } 
-        }
-    }
-
-    // scrollEl(){
-    //     if (this.el.offsetHeight + this.el.scrollTop >= this.el.scrollHeight) {
-    //         this.props.onReadChat(localStorage.getItem("username"), this.state.receiver)
-    //     } 
-    // }
-
-    scrollTop() {
-        if (this.el.offsetHeight + this.el.scrollTop <= this.el.scrollHeight - 120) {
-            this.setState({ scrollBtn: true })
-        } else {
-            this.setState({ scrollBtn: false })
         }
     }
 
@@ -77,7 +59,7 @@ export default class ChatBox extends Component {
         if (this.state.onChat) {
             element = <div className="chatcontainer-chatbox-container">
                 <div className="chatcontainer-chatbox" ref={el => { this.el = el; }}>
-                    <ChatItemBox contents={this.props.chats} resend={this.props.onResendChat} delete={this.props.onDeleteChat} receiver={this.state.receiver} scrolltobottom={this.scrollToBottom} />
+                    <ChatItemBox contents={this.props.chats} resend={this.props.onResendChat} delete={this.props.onDeleteChat} receiver={this.state.receiver} room={this.props.room} socket={this.props.socket} />
                 </div>
                 <ChatForm add={this.props.onAddChat} receiver={this.state.receiver} room={this.props.room} socket={this.props.socket} />
             </div>
@@ -90,13 +72,12 @@ export default class ChatBox extends Component {
                 <main className="main-chatbox">
                     <div className="sidebar-chatbox">
                         <div className="title-sidebar-chatbox">Contacts</div>
-                        <ChatUserBox items={this.props.users} onChat={this.state.onChat} startChat={this.startChat} socket={this.props.socket} />
+                        <ChatUserBox items={this.props.users} onChat={this.state.onChat} startChat={this.startChat} socket={this.props.socket} setroom={this.props.setroom} />
                         <button className="btn-logout" onClick={this.logout}>LOG OUT</button>
                     </div>
                     <div className="content-chatbox">
                         <div className="content-header-chatbox">
                             {this.state.receiver}
-                            {this.state.onChat && <i className="fas fa-tasks kebab-icon"></i>}
                         </div>
                         <div className="content-main-chatbox">
                             {element}

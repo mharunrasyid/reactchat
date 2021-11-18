@@ -25,6 +25,8 @@ export default class ChatUserItem extends Component {
         }
 
         this.props.socket.emit("invite-partner", this.props.username, localStorage.getItem("username"))
+        const room = `${localStorage.getItem("username")}-${this.props.username}`
+        this.props.setroom(room)
     }
 
     render() {

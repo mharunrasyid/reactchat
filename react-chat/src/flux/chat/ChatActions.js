@@ -83,7 +83,7 @@ const Actions = {
     resendChat(id, receiver, content) {
         request.post('chats', { id, sender: localStorage.getItem("username"), receiver, content }, {
             headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` },
-        }).then((chat) => {
+        }).then(() => {
             Actions.successResendChat(id)
         }).catch((err) => {
             Actions.failedResendAddChat(id)
@@ -120,7 +120,6 @@ const Actions = {
         request.put('chats/read', { sender, receiver }, {
             headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` },
         }).then(() => {
-            console.log("readChat");
             Actions.loadChat(receiver);
             UserActions.loadUser()
         }).catch((err) => {

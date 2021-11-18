@@ -19,11 +19,11 @@ export default class ChatForm extends Component {
 
         if (this.state.content.trim()) {
             this.props.add(id, this.props.receiver, this.state.content);
-            console.log("test", this.props.receiver);
             this.props.socket.emit("addChat", { id, content: this.state.content, room: this.props.room, receiver: this.props.receiver, sender: localStorage.getItem("username") })
         }
 
         this.setState({ content: "" });
+
         event.target.querySelector('textarea').style.height = "30px";
         event.preventDefault();
     }
