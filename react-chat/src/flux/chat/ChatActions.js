@@ -54,12 +54,13 @@ const Actions = {
         })
     },
 
-    addChat(id, receiver, content) {
+    addChat(id, receiver, content, cb) {
         Actions.drawAddChat(id, "sender", content)
         request.post('chats', { id, sender: localStorage.getItem("username"), receiver, content }, {
             headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` },
         }).then((chat) => {
             Actions.successAddChat(chat)
+            cb()
         }).catch((err) => {
             Actions.failedAddChat(id, content)
             throw err
@@ -80,11 +81,12 @@ const Actions = {
         })
     },
 
-    resendChat(id, receiver, content) {
+    resendChat(id, receiver, content, cb) {
         request.post('chats', { id, sender: localStorage.getItem("username"), receiver, content }, {
             headers: { "Authorization": `Bearer ${localStorage.getItem("token")}` },
         }).then(() => {
             Actions.successResendChat(id)
+            cb()
         }).catch((err) => {
             Actions.failedResendAddChat(id)
             throw err

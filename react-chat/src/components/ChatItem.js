@@ -31,7 +31,9 @@ export default class ChatItem extends Component {
             }
         } else {
             element = <div className={this.props.position === "sender" ? "chat-item-actions" : "chat-item-actions chat-item-actions-others"}>
-                <i className="fas fa-redo-alt" onClick={() => this.props.resend(this.props.id, this.props.receiver, this.props.content)}></i>
+                <i className="fas fa-redo-alt" onClick={() => this.props.resend(this.props.id, this.props.receiver, this.props.content, () => {
+                    this.props.socket.emit("addChat", { id: this.props.id, content: this.props.content, room: this.props.room, receiver: this.props.receiver, sender: localStorage.getItem("username") })
+                })}></i>
             </div>
         }
 

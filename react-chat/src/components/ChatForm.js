@@ -18,8 +18,10 @@ export default class ChatForm extends Component {
         const id = Date.now()
 
         if (this.state.content.trim()) {
-            this.props.add(id, this.props.receiver, this.state.content);
-            this.props.socket.emit("addChat", { id, content: this.state.content, room: this.props.room, receiver: this.props.receiver, sender: localStorage.getItem("username") })
+            const content = this.state.content
+            this.props.add(id, this.props.receiver, this.state.content, () => {
+                this.props.socket.emit("addChat", { id, content, room: this.props.room, receiver: this.props.receiver, sender: localStorage.getItem("username") })
+            });
         }
 
         this.setState({ content: "" });

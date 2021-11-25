@@ -19,7 +19,7 @@ router.get('/notif/:username', helpers.isLoggedIn, async function (req, res, nex
   try {
     const users = await User.find({});
     const userNotif = users.filter(item => item.username !== req.params.username).map(item => {
-      totalUnread = users.filter(item => item.username === req.params.username)[0].chat[item.username]?.filter(item => !item.read).length || 0
+      totalUnread = item.chat[req.params.username]?.filter(item => !item.read).length || 0
       return { username: item.username, unread: totalUnread };
     })
     res.json(userNotif)

@@ -78,6 +78,11 @@ class App extends Component {
         this.state.onDrawNotif(data)
       })
 
+      socket.on("comingResendchat", data => {
+        this.state.onDrawAddChat(data.id, "receiver", data.content)
+        this.state.onDrawNotif(data)
+      })
+
       socket.on("deletechat", data => {
         this.state.onDeleteChat(data.id, data.sender, data.receiver)
       })
