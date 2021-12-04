@@ -77,7 +77,6 @@
 .sidebar-chatbox {
   width: 320px;
   margin-right: 10px;
-  padding-top: 15px;
   display: flex;
   border-radius: 8px;
   flex-direction: column;
@@ -90,7 +89,7 @@
   font-weight: bold;
   text-align: center;
   color: rgba(0, 0, 0, 0.6);
-  padding-bottom: 20px;
+  padding: 25px;
   border-bottom: 2px solid rgba(128, 128, 128, 0.2);
 }
 
@@ -170,7 +169,7 @@
 .content-header-chatbox {
   position: relative;
   background: rgb(248, 248, 248);
-  padding: 22px;
+  padding: 30px;
   border-radius: 8px;
   font-size: 35px;
   text-align: center;
@@ -179,7 +178,7 @@
 
 .content-main-chatbox {
   border: 5px solid rgb(248, 248, 248);
-  height: calc(100vh - 140px);
+  height: calc(100vh - 155px);
   border-radius: 8px;
   display: flex;
 }
